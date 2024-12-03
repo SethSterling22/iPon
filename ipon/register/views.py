@@ -178,16 +178,18 @@ def publish_pon(request):
             except User.DoesNotExist:
                 return JsonResponse({'error': 'User not found.'}, status=404)
 
-            # Create a new Ride instance using the temporary driver and set the passenger
+            # Create a new Ride instance using the temporary driver
             ride = Ride(
                 Driver=temp_driver,
                 Start_location=start_location,
                 End_location=end_location,
                 Date_Start=timezone.now(),
-                Date_End=timezone.now(),
-                Passenger=user  # Set the current user as the passenger
+                Date_End=timezone.now()
             )
             ride.save()  # Save the Ride instance
+
+            # Add the current user as a passenger
+            ride.Passenger.add(user)  # Use the add() method for ManyToManyField
 
             return JsonResponse({'status': 'success'})
 
