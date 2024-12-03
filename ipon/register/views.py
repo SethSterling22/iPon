@@ -189,7 +189,7 @@ def publish_pon(request):
             ride.save()  # Save the Ride instance
 
             # Add the current user as a passenger
-            ride.Passenger.add(user)  # Use the add() method for ManyToManyField
+            ride.Passenger.add(request.user)  # Use the add() method for ManyToManyField
 
             return JsonResponse({'status': 'success'})
 
