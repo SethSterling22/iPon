@@ -1,0 +1,77 @@
+{% load static %}
+
+    {% include 'footer_navbar.html' %}
+
+    <div class="popup-container" id="popupContainer">
+        {% include 'footer_navbar.html' %}
+
+        {% comment %} ////////////////////////////////// Información del footer "MAKE" ////////////////////////////////// {% endcomment %}
+        <div class="container_footer">
+            <div class="form-group" style"width: 100%">
+                {% comment %} <fieldset> {% endcomment %}
+                    {% comment %} <legend>Route Planner</legend> {% endcomment %}
+                    <div class="input-group">
+                        <img src="{% static 'assets/location_on.png' %}" alt="Location Icon" class="input-icon" />
+                        <div style="width: 100%">
+                            <label for="source">Original Location:</label>
+                            <input type="text" id="source" class="form-control" placeholder="Where from?" />
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <img src="{% static 'assets/search.png' %}" alt="Search Icon" class="input-icon" />
+                        <div style="width: 100%;">
+                            <label for="destination">Desired Location:</label>
+                            <input type="text" id="destination" class="form-control" placeholder="Where to?" />
+                        </div>
+                    </div>
+                    
+                
+                    <div class="button-group">
+                        <img src="{% static 'assets/calendar.png' %}" alt="Calendar Icon" class="button-icon" />
+                        <a href="{% url 'published_pons' %}" class="view-btn" style="display: flex; justify-content: center; align-items: center; text-decoration: none;">View Published Pons</a>
+                    </div>
+
+                    <br><br><br><br>
+                    <a href="{% url 'publish_pon' %}?from_location=PLACEHOLDER_FROM&to_location=PLACEHOLDER_TO">
+                        <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Publish Pon</button>
+                    </a>
+                    
+                {% comment %} </fieldset> {% endcomment %}
+            </div>
+        </div>
+
+        {% comment %}<div id="ride-popup" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h2>Confirm Ride</h2>
+                <p>From: <span id="from-location"></span></p>
+                <p>To: <span id="to-location"></span></p>
+                <label for="num-people">Number of People (including yourself):</label>
+                <input type="number" id="num-people" min="1" max="4" value="1" />
+                <button id="publish-btn" class="accept-pon-btn">Publish Ride</button>
+            </div>
+        </div> {% comment %}
+        {% comment %} ////////////////////////////////// Información del footer "MAKE" ////////////////////////////////// {% endcomment %}
+
+    </div>
+    <div class="overlay_footer" onclick="toggleShow_make()"></div>
+
+    <script src="{% static 'jstemplates/toggle_sidebar.js' %}"></script>
+
+    <script>
+        document.getElementById('route-btn').addEventListener('click', function (event) {
+            const fromLocation = document.getElementById('source').value;
+            const toLocation = document.getElementById('destination').value;
+        
+            if (fromLocation && toLocation) {
+                const button = event.target.closest('a');
+                button.href = button.href.replace('PLACEHOLDER_FROM', encodeURIComponent(fromLocation));
+                button.href = button.href.replace('PLACEHOLDER_TO', encodeURIComponent(toLocation));
+            } else {
+                event.preventDefault(); // Prevent navigation if fields are empty
+                alert("Please enter both the 'From' and 'To' locations.");
+            }
+        });
+        
+    </script>

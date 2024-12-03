@@ -1,0 +1,312 @@
+/* ////////////////////////// Estilos del mapa ////////////////////////// */
+#map {
+  width: 100%;
+  height: 30vh;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ////////////////////////// Container Styles ////////////////////////// */
+.container_footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  /* padding: 1rem; */
+  font-size: 2vh;
+}
+
+/* ////////////////////////// Button and Input Styles ////////////////////////// */
+.open-btn,
+.view-btn,
+.save-btn,
+.close-btn,
+input.form-control,
+input[type="Location"] {
+  margin-top: 1vh;
+  background-color: #D8DADF;
+  color: black;
+  border: none;
+  padding: 1.5vh; /* Consistent padding */
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  width: calc(100% - 3vh); /* Full width */
+  height: 3.5rem;
+  font-size: 2vh; /* Consistent font size */
+}
+
+input.form-control {
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Match border radius */
+  font-weight: 700; /* Use the same font weight */
+}
+
+/* ////////////////////////// Modal Styles ////////////////////////// */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed position to overlay the viewport */
+  z-index: 100; /* Sit on top of other content */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* Centered vertically */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Responsive width */
+  max-width: 500px; /* Optional: limit max width */
+  border-radius: 8px; /* Optional: add rounded corners */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ////////////////////////// Button Styles ////////////////////////// */
+.accept-pon-btn {
+  display: flex;
+  margin: 20px auto; /* Center the button */
+  padding: 10px 20px;
+  background-color: #E55806; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.accept-pon-btn:hover {
+  background-color: #F28D77; /* Change button color on hover */
+}
+
+/* ////////////////////////// Pon Card Styles ////////////////////////// */
+.pon-card {
+  background-color: #F28D77; /* Set background color */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px;
+  width: 300px;
+  position: relative; /* For positioning pon_id */
+  color: #D8DADF; /* Change text color for better contrast */
+}
+
+.pon-id {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+}
+
+/* ////////////////////////// Input Group Styles ////////////////////////// */
+.input-group {
+  display: flex;
+  width: 100%;
+  align-items: center; /* Align items vertically */
+  margin-top: 4vh; /* Space between input groups */
+  margin-bottom: 4vh; /* Space between input groups */
+  font-size: 2vh;
+}
+
+.input-icon {
+  width: 4vh; /* Adjust the size as necessary */
+  height: 4vh; /* Adjust the size as necessary */
+  margin-top: 1.5vh;
+  margin-right: 10px; /* Space between icon and input */
+}
+
+/* ////////////////////////// Button Group Styles ////////////////////////// */
+.button-group {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  margin-top: 15px; /* Space above the button group */
+  width: 100%;
+}
+
+.button-icon {
+  width: 4vh; /* Adjust the size as necessary */
+  height: 4vh; /* Adjust the size as necessary */
+  margin-right: 10px;
+}
+
+
+
+/*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
+.brutalist-card__button {
+  display: flex;
+  width: 100%;
+  height: 4vh;
+  padding: 3vh;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 8px;
+  background-color: #E55806;
+  color: #fff;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 3px 3px 0 #212126;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  /* z-index: 999; */
+}
+
+.brutalist-card__button--read {
+  display:flex;
+  background-color: #000;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+
+.brutalist-card__button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 15vh;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+.brutalist-card__button:hover::before {
+  left: 100%;
+}
+
+.brutalist-card__button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 #000;
+}
+
+.brutalist-card__button--mark:hover {
+  background-color: #F28D77;
+  /* border-color: #F28D77; */
+  color: #fff;
+  box-shadow: 5px 5px 0 #212126;
+}
+
+.brutalist-card__button--read:hover {
+  background-color: #ff0000;
+  border-color: #ff0000;
+  color: #fff;
+  box-shadow: 7px 7px 0 #800000;
+}
+
+.brutalist-card__button:active {
+  transform: translate(5px, 5px);
+  box-shadow: none;
+}
+  /*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
+
+/*//////////////////////////////////////// Página de published pons /////////////////////////////////////////*/
+.back-main {
+  height: 8vh;
+  display: flex;
+  background-color: #E55806;
+  align-items: center; 
+  z-index: 999;
+  justify-content: space-evenly;
+}
+
+.back-title{
+  font-size: 2.5vh;
+  width: 90%;
+  display: flex;
+  color: white;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+}
+
+.back-title:hover{
+  /* font-size: 2.7vh; */
+  cursor: pointer;
+  background-color: #D44E05; 
+  border-radius: 5px;
+  padding: 1vh 0;
+}
+
+.back-title img {
+  width: 3vh;
+  height: auto; 
+  margin-left: 2vh; 
+  margin-right: 2vh; 
+}
+
+
+.cards-container{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 84vh; 
+  overflow-y: auto;
+}
+
+.pon-card {
+  background-color: #F28D77; 
+  color: white; 
+  width: 70vw;
+  font-size: 2.5vh;
+  border-radius: 8px; 
+  padding: 4vh; 
+  margin: 20px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+  display: flex; 
+  flex-direction: column; 
+  border: #E55806 solid 3px;
+}
+
+.pon-card p {
+  margin: 5px 0; /* Margen entre líneas */
+  font-size: 2.5vh; /* Tamaño de fuente para el texto */
+}
+
+.pon-card .accept-button {
+  background-color: #ff8c00; /* Color del botón */
+  color: white; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px; /* Espaciado interno del botón */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  font-size: 1em; /* Tamaño de fuente del botón */
+  transition: background-color 0.3s; /* Transición suave para el color */
+}
+
+.pon-card .accept-button:hover {
+  background-color: #ffa500; /* Color del botón al pasar el ratón */
+}
+
+

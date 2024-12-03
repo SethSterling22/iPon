@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
+    <link rel="stylesheet" href="{% static 'mained.css' %}">
+</head>
+
+<body>
+    {% include 'sidebar.html' %}
+    <div id="map" style="height: 84vh;"></div>
+    <div id="route-info" class="route-info"></div>
+
+    {% include 'info_footer.html' %}
+    
+    <script src="{% static 'jstemplates/map.js' %}"></script>
+    <script src="{% static 'jstemplates/publish_pon.js' %}"></script>
+</body>
+</html>

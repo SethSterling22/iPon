@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+   {% load static %}
+<link rel="stylesheet" href="{% static 'login_styles.css' %}">
+<head>
+   <meta charset="UTF-8">
+   <title>iPon Login</title>
+   <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
+</head>
+
+<div class="container">
+
+      {% comment %} Mensaje de error {% endcomment %}
+      {% if messages %}
+         {% for message in messages %}
+            <div class="error">
+               <div class="error__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" height="40" fill="none"><path fill="#393a37" d="m13 13h-2v-6h2zm0 4h-2v-2h2zm-1-15c-1.3132 0-2.61358.25866-3.82683.7612-1.21326.50255-2.31565 1.23915-3.24424 2.16773-1.87536 1.87537-2.92893 4.41891-2.92893 7.07107 0 2.6522 1.05357 5.1957 2.92893 7.0711.92859.9286 2.03098 1.6651 3.24424 2.1677 1.21325.5025 2.51363.7612 3.82683.7612 2.6522 0 5.1957-1.0536 7.0711-2.9289 1.8753-1.8754 2.9289-4.4189 2.9289-7.0711 0-1.3132-.2587-2.61358-.7612-3.82683-.5026-1.21326-1.2391-2.31565-2.1677-3.24424-.9286-.92858-2.031-1.66518-3.2443-2.16773-1.2132-.50254-2.5136-.7612-3.8268-.7612z"></path></svg>
+               </div>
+               <div class="error__title">{{ message }}</div>
+               <div class="error__close" onclick="closeError()"><svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 20 20" height="40"><path fill="#393a37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg></div>
+            </div>
+         {% endfor %}
+      {% endif %}
+
+
+      <div id="buttons" style="display: flex; align-items: center; flex-direction: column;">
+         <img src="{% static 'assets/icon.png' %}" style="margin-top: 25vh;" alt="Icon image" width="600vw">
+         <br><br><br><br><br><br><br><br><br>
+         <button class="brutalist-card__button brutalist-card__button--mark"  onclick="showForm('login')">Log In</button>
+         <br><br><br><br><br><br>
+         <button class="brutalist-card__button brutalist-card__button--mark" onclick="showForm('register')">Register</button>
+      </div>
+
+      {% comment %} //////////////////////// Sección de Login //////////////////////// {% endcomment %}
+      <div id="forms">
+         <div id="login-form" class="form-container" style="display: none;">
+            <img src="{% static 'assets/back.png' %}" style="margin-right: 90%;" onclick="showForm('menu')" alt="Go back" width="50vh"><br><br>
+            <form method="post">
+            {% csrf_token %}
+               <input type="hidden" name="action" value="login">
+               <input type="hidden" name="Token" value="none">
+               <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" name="email" id="email" placeholder="your@email.com" required>
+               </div>
+               <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" name="password" id="password" placeholder="*********" required>
+               </div>
+               <button class="brutalist-card__button brutalist-card__button--mark"  type="submit">Log In</button>
+               <br><br><br>
+               <div class="forgot-password">
+                  <a href="#" style="color: black;">Forgot password?</a>
+                  <br><br>
+               </div>
+            </form>
+         </div>
+         {% comment %} //////////////////////// Sección de Login //////////////////////// {% endcomment %}
+
+
+         {% comment %} //////////////////////// Sección de Registro //////////////////////// {% endcomment %}
+         <div id="register-form" class="form-container" style="display: none;">
+            <img src="{% static 'assets/back.png' %}" style="margin-right: 90%;" onclick="showForm('menu')" alt="Go back" width="50vh"><br><br>
+            <form style="width: 100%;" method="post">
+            {% csrf_token %}
+               <input type="hidden" name="action" value="signup">
+               <input type="hidden" name="Token" value="none">
+               <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" name="Username" id="username" placeholder="Name Lastname" required>
+               </div>
+               <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" name="Phone_number" id="phone" placeholder="(000) 000 - 0000" required>
+               </div>
+               <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" name="E_mail" id="register-email" placeholder="your@email.com" required>
+               </div>
+               <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" name="Pass" id="register-password" placeholder="*********" required>
+               </div>
+               <div class="form-group">
+                  <label for="confirm-password">Confirm your Password</label>
+                  <input type="password" name="password2" id="confirm-password" placeholder="*********" srequired>
+               </div>
+               <div class="form-group checkbox-group">
+                  <input type="checkbox" id="terms" required>
+                  <label for="terms">Accept Terms of use</label>
+               </div>
+               <button class="brutalist-card__button brutalist-card__button--mark"  type="submit">Register</button>
+            </form>
+         </div>
+      </div>
+     {% comment %} //////////////////////// Sección de Registro //////////////////////// {% endcomment %}
+
+   </div>
+
+   <script>
+      function closeError() {
+         var errorDiv = document.querySelector('.error');
+         errorDiv.style.display = 'none';
+      }
+     // Cerrar el mensaje de error al hacer clic fuera de él
+      document.addEventListener('click', function(event) {
+         const errorContainer = document.querySelector('.error');
+         if (errorContainer && !errorContainer.contains(event.target)) {
+            closeError();
+         }
+      });
+
+      function showForm(formType) {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+
+            if (formType === 'login') {
+               document.getElementById('login-form').style.display = 'flex';
+               document.getElementById('buttons').style.display = 'none';
+            } else if (formType === 'register') {
+               document.getElementById('register-form').style.display = 'flex';
+               document.getElementById('buttons').style.display = 'none';
+            }
+            else if (formType === 'menu') {
+               document.getElementById('register-form').style.display = 'none';
+               document.getElementById('login-form').style.display = 'none';
+               document.getElementById('buttons').style.display = 'flex';
+            }
+            
+      }
+
+   </script>
+</html>
+
+
+
+
+
+

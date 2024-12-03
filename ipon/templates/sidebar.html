@@ -1,0 +1,14 @@
+{% load static %}
+
+<body >
+    {% include 'navbar.html' %}
+    <div class="overlay"  onclick="toggleShow()"></div>
+    <aside id="sidebar" class="sidebar">
+        <a class="sidebar-options">Username</a><hr style="width: 80%;">
+        <a class="sidebar-options">Profile Infomation</a><hr style="width: 80%;">
+        <a class="sidebar-options">Become a Driver / Active Driver</a><hr style="width: 80%;">
+        <a class="sidebar-options" style="margin-top: 75vh;">Cerrar sesión</a><hr style="width: 80%;">
+    </aside>
+
+    <script src="{% static 'jstemplates/toggle_sidebar.js' %}"></script>
+</body>

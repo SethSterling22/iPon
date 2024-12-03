@@ -1,0 +1,15 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'styles_navbar.css' %}">
+<nav class="nav-main">
+    <button class="hide-sidebar" onclick="toggleShow()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div style="display: flex; flex-direction: column;">
+        <div class="nav-title">Passenger:</div>
+        {% comment %} reemplazar por el nombre del ususario  {% endcomment %}
+        <div class="nav-title"><b>Username</b></div> 
+    </div> 
+</nav>
