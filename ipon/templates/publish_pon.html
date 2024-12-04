@@ -56,14 +56,13 @@
                 const fromLocation = document.getElementById('source').value;
                 const toLocation = document.getElementById('destination').value;
 
-                // Optional: You can perform validation here before submitting
-
                 // Send data to the server using fetch
                 const data = {
                     from_location: fromLocation,
                     to_location: toLocation,
                     number_of_people: numberOfPeople,
                 };
+                console.log("ride data :" , data)
 
                 fetch("{% url 'publish_pon' %}", {
                     method: 'POST',

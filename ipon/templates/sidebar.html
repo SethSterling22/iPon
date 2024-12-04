@@ -4,10 +4,23 @@
     {% include 'navbar.html' %}
     <div class="overlay"  onclick="toggleShow()"></div>
     <aside id="sidebar" class="sidebar">
-        <a class="sidebar-options">Username</a><hr style="width: 80%;">
+        <div class="sidebar-options"><img src="{% static 'assets/icon.png' %}" style="margin-top: 2vh;" alt="Icon image" width="500vw"></div>
+        <a class="sidebar-options">
+            {% if username %}
+            {{ username }}
+            {% else %}
+                Guest
+            {% endif %}
+        </a><hr style="width: 80%;">
         <a class="sidebar-options">Profile Infomation</a><hr style="width: 80%;">
         <a class="sidebar-options">Become a Driver / Active Driver</a><hr style="width: 80%;">
-        <a class="sidebar-options" style="margin-top: 75vh;">Cerrar sesión</a><hr style="width: 80%;">
+
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 30vh;">
+            {% csrf_token %}
+            <button type="submit" class="button custom-button">Cerrar sesión</button>
+            <hr style="width: 80%;">
+        </form>
+        
     </aside>
 
     <script src="{% static 'jstemplates/toggle_sidebar.js' %}"></script>

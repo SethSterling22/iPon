@@ -3,13 +3,13 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Pon Status</title>
+    <title>Previous Pons</title>
     <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
     <link rel="stylesheet" href="{% static 'mained.css' %}">
 </head>
 
 <nav class="back-main"> 
-    <div class="back-title" >Pon Status</div> 
+    <div class="back-title" >Previous Pons</div> 
 </nav>
 
 <body>
@@ -26,30 +26,24 @@
                         </div>
                         <hr><br>
                         <p><b>Driver:</b> {{ ride.Driver.Username }}</p>  <!-- Ensure this matches your User model field -->
-                        <p><b>License:</b> </p>
-                        <p><b>Occupied:</b> 1 / 4</p>
-                        <p><b>Passenger:</b> {{ ride.Passenger.Username }}</p>  <!-- Accessing passenger's username -->
                         <p><b>From:</b> {{ ride.Start_location.name }}</p>  <!-- Accessing location name -->
                         <p><b>To:</b> {{ ride.End_location.name }}</p>  <!-- Accessing location name -->
-                        <p><b>Start Date:</b> {{ ride.Date_Start }}</p>
                         <p><b>End Date:</b> {{ ride.Date_End }}</p>
+
+                        <p><b>Rate:</b> N/A</p>
                         <br>
-                        
+
+                        {% comment %} Traer los elementos del history, añadir un campo de "Evaluado"
+                        para desplegar el botón de "Evaluate", si ya se evaluó, quitar submit rate. Si el valor es 0 (valor default) se despliega "N/A"{% endcomment %}
+                        {% comment %} Al darle click en evaluar, ha de salir un modal con el rate y un comentario, el rate es obligatorio. El botón dirá "Submit Rate" {% endcomment %}
+                        <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Evaluate</button>
                     </div>
                 </div>
-
                 {% endfor %}
-
-                {% comment %} Debe haber condiciones que para cambiar el print de "In progress a Finished" {% endcomment %}
-                <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Update - In progress</button>
-
             {% else %}
                 <p>No published rides available.</p>
             {% endif %}
-
-
-        
-
+    
     </div>
 
     <nav class="back-main"> 
