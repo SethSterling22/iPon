@@ -48,9 +48,9 @@
     align-items: center;
     text-align: center;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 2vh;
     width: 100%;
-    font-size: 30px;
+    font-size: 2.5vh;
     padding-block: 10px;
     text-decoration: none;
     color: inherit;
@@ -99,6 +99,32 @@
 .hide-sidebar span+span {
     margin-top: 1.2vh;
 }
+
+.button[type="submit"] {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-top: 2vh;
+    width: 100%;
+    font-size: 2.5vh;
+    padding-block: 10px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    border-color: #D8DADF00;
+}
+
+.button.custom-button[type="submit"] {
+    font-family: 'Times New Roman', serif; 
+    background-color: #ffffff00; /* Cambia el color de fondo */
+    color: inherit; /* Cambia el color del texto */
+    border: none; /* Elimina el borde */
+    padding-block: 10px; /* Cambia el padding */
+    font-size: 2.5vh; /* Cambia el tamaño de la fuente */
+}
+
+
 /* ////////////// Botón - Menú de hamburguesa ////////////// */
 
 

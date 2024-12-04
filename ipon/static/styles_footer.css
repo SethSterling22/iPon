@@ -19,8 +19,15 @@
     color: white;
     justify-content: center;
     text-align: center;
+    text-decoration: none;
     transition: width 0.3s, height 0.3s, background-color 0.3s;
 }
+
+.footer-title a{
+    color: white;
+    text-decoration: none; 
+    width: 100%;
+  }
 
 .footer-title:hover{
     font-size: 2.7vh;

@@ -20,6 +20,7 @@ import googlemaps
 import json
 from django.http import JsonResponse
 from django.utils import timezone
+from datetime import timedelta
 ######################## Definición de función login_required ###############################
 
 # Función personalizada de Login_required
@@ -54,8 +55,13 @@ def login_or_signup(request):
             password = request.POST.get('password', None)
             if email and password:
                 token = autenticar(email, password)
+                username = get_username(email)
                 if token:
                     request.session['user_token'] = token 
+                    if username:
+                        username = clean_username(username)
+                    # Almacena en la sesión
+                    request.session['username'] = username
                     return redirect('main')
                 else:
                     messages.success(request, ("There was an error in the credentials, please try again."))
@@ -97,7 +103,9 @@ def login_or_signup(request):
 @csrf_protect
 @login_required
 def main_view(request):
+    username = request.session.get('username')  
     context = {
+        'username': username, 
         'google_maps_api_key': settings.GOOGLE_APIK
     }
     return render(request, 'main.html', context)
@@ -110,6 +118,25 @@ def published_pons(request):
         return render(request, 'published_pons.html', {'published_pons': rides})
     else:
         return redirect('login')  # Redirect if user is not authenticated
+
+@login_required
+def pon_status(request):
+    user_token = request.session.get('user_token')
+    if user_token:
+        rides = Ride.objects.all()  # Get all rides
+        return render(request, 'pon_status.html', {'pon_status': rides})
+    else:
+        return redirect('login')  # Redirect if user is not authenticated
+
+@login_required
+def previous_pons(request):
+    user_token = request.session.get('user_token')
+    if user_token:
+        rides = Ride.objects.all()  # Get all rides
+        return render(request, 'previous_pons.html', {'previous_pons': rides})
+    else:
+        return redirect('login')  # Redirect if user is not authenticated
+
 
 def create_temp_driver():
     # Create or get the existing temporary driver
@@ -173,10 +200,18 @@ def publish_pon(request):
             temp_driver = create_temp_driver()
 
             # Retrieve the user based on the token
-            try:
-                user = User.objects.get(Token=user_token)
-            except User.DoesNotExist:
-                return JsonResponse({'error': 'User not found.'}, status=404)
+            if user_token:
+                try:
+                    user = User.objects.get(Token=user_token)
+                except User.DoesNotExist:
+                    return JsonResponse({'error': 'User not found.'}, status=404)
+            else:
+                return JsonResponse({'error': 'User token is missing.'}, status=401)
+
+            # Check for existing active rides
+            active_rides = Ride.objects.filter(Passenger=user, Date_End__gt=timezone.now())
+            if active_rides.exists():
+                return JsonResponse({'error': 'You already have an active ride.'}, status=400)
 
             # Create a new Ride instance using the temporary driver
             ride = Ride(
@@ -184,15 +219,17 @@ def publish_pon(request):
                 Start_location=start_location,
                 End_location=end_location,
                 Date_Start=timezone.now(),
-                Date_End=timezone.now()
+                Date_End=timezone.now() + timedelta(minutes=15)  # Set end time 15 minutes in the future
             )
-            ride.save()  # Save the Ride instance
+            ride.save()  # Save the Ride instance first
 
-            # Add the current user as a passenger
-            ride.Passenger.add(request.user)  # Use the add() method for ManyToManyField
+            # Add the user as a passenger
+            ride.Passenger.add(user)  # Use the add() method for ManyToManyField
 
             return JsonResponse({'status': 'success'})
+            
+    return JsonResponse({'error': 'Invalid request method or content type'}, status=400)
 
-    else:
-        form = RideForm()
-    return render(request, 'publish_pon.html', {'form': form})
+    # else:
+    #     form = RideForm()
+    # return render(request, 'publish_pon.html', {'form': form})

@@ -28,6 +28,30 @@ def establecer_conexion():
     connection = pymysql.connect(**DB_CONFIG)
     return connection
 
+def get_username(email):
+    # Establecer conexión a la base de datos
+    connection = establecer_conexion()
+    cursor = connection.cursor()
+    
+    # Consulta para obtener la contraseña asociada al correo electrónico dado
+    query = "SELECT Username FROM register_user WHERE E_mail = %s"
+    cursor.execute(query, (email,))
+    result = cursor.fetchone()
+
+    # Verificar si se obtuvo un resultado
+    if result:
+        username = result[0]  # Obtener el primer elemento de la tupla
+    else:
+        username = None  # O manejar el caso de no encontrar el usuario
+
+    return username
+
+
+def clean_username(username):
+    username = re.sub(r'[^a-zA-Z0-9]', '', username)
+    print(username)
+    return username  # Solo permite letras y números
+
 ######################## Funciones de apoyo ######################## 
 
 ######################## Función de autenticar el usuario ######################## 

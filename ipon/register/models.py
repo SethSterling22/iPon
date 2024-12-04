@@ -10,6 +10,8 @@ class User(models.Model):
     Pass = models.CharField(max_length=128)
     Token = models.TextField()
     Phone_number = models.CharField(max_length=20)
+    Actual_Pon = models.ManyToManyField('Ride', related_name='passengers')
+
     Is_driver = models.BooleanField(default=False, help_text="Indica si el usuario es conductor.")
     Status = models.CharField(max_length=20)
     License_number = models.CharField(max_length=50)
@@ -18,7 +20,7 @@ class User(models.Model):
 ###########################################################################################################
 # Moodelo de Pon
 class Ride(models.Model):
-    Ride_id = models.AutoField(primary_key=True, default=1)
+    Ride_id = models.AutoField(primary_key=True)
     Driver = models.ForeignKey(User, related_name='rides_as_driver', on_delete=models.CASCADE)
     Passenger = models.ManyToManyField(User, related_name='rides_as_passenger')
     Start_location = models.ForeignKey('Location', related_name='start_rides', on_delete=models.CASCADE)
