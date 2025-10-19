@@ -16,7 +16,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   margin: 20px;
-  /* padding: 1rem; */
+  padding: 1vh;
   font-size: 2vh;
 }
 
@@ -49,8 +49,10 @@ input.form-control {
 /* ////////////////////////// Modal Styles ////////////////////////// */
 .modal {
   display: none; /* Hidden by default */
-  position: fixed; /* Fixed position to overlay the viewport */
+  position: fixed;
   z-index: 100; /* Sit on top of other content */
+  justify-content: center;
+  align-items: center;
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -60,20 +62,24 @@ input.form-control {
 }
 
 .modal-content {
+  display: flex;
+  justify-content: center;
   background-color: #fefefe;
-  margin: 15% auto; /* Centered vertically */
-  padding: 20px;
+  flex-direction: column;
+  padding: 4vh;
   border: 1px solid #888;
-  width: 80%; /* Responsive width */
-  max-width: 500px; /* Optional: limit max width */
+  width: 75%; /* Responsive width */
+  /* max-width: 500px; */
+  font-size: 2.5vh;
   border-radius: 8px; /* Optional: add rounded corners */
 }
 
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+  color: #848484;
+  font-size: 5vh;
   font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .close:hover,
@@ -83,6 +89,15 @@ input.form-control {
   cursor: pointer;
 }
 
+.route-info {
+  position: fixed; 
+  z-index: 2; 
+  font-size: 2.5vh;
+  bottom: 8.2vh;
+  left: 0; 
+  padding: 10px; 
+  background-color: rgba(255, 255, 255, 0.7);
+}
 /* ////////////////////////// Button Styles ////////////////////////// */
 .accept-pon-btn {
   display: flex;
@@ -117,6 +132,7 @@ input.form-control {
   right: 10px;
   font-weight: bold;
 }
+/* ////////////////////////// Pon Card Styles ////////////////////////// */
 
 /* ////////////////////////// Input Group Styles ////////////////////////// */
 .input-group {
@@ -134,6 +150,7 @@ input.form-control {
   margin-top: 1.5vh;
   margin-right: 10px; /* Space between icon and input */
 }
+/* ////////////////////////// Input Group Styles ////////////////////////// */
 
 /* ////////////////////////// Button Group Styles ////////////////////////// */
 .button-group {
@@ -148,7 +165,7 @@ input.form-control {
   height: 4vh; /* Adjust the size as necessary */
   margin-right: 10px;
 }
-
+/* ////////////////////////// Button Group Styles ////////////////////////// */
 
 
 /*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
@@ -227,7 +244,7 @@ input.form-control {
   transform: translate(5px, 5px);
   box-shadow: none;
 }
-  /*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
+/*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
 
 /*//////////////////////////////////////// Página de published pons /////////////////////////////////////////*/
 .back-main {
@@ -316,5 +333,66 @@ input.form-control {
 .pon-card .accept-button:hover {
   background-color: #ffa500; /* Color del botón al pasar el ratón */
 }
+
+/*//////////////////////////////////////// Página de profile /////////////////////////////////////////*/
+.profile-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content horizontally, adjust as needed */
+  padding: 4vh; /* Add some padding around the profile container */
+  background: #ebecee; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 5px 0; /* Optional: Add margin for spacing */
+  font-size: 2.5vh;
+}
+/*//////////////////////////////////////// Página de profile /////////////////////////////////////////*/
+
+
+/*//////////////////////////////////////// Rating Stars /////////////////////////////////////////*/
+/* From Uiverse.io by andrew-demchenk0 */ 
+
+.rating {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  flex-direction: row-reverse; /* Asegura que los elementos se alineen en fila */
+}
+
+.rating:not(:checked) > input {
+  position: absolute;
+  appearance: none;
+}
+
+.rating:not(:checked) > label {
+  cursor: pointer;
+  font-size: 7vh;
+  color: #D8DADF;
+  margin: 0 1.5vh;
+}
+
+.rating:not(:checked) > label:before {
+  content: '★';
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+  color: #e58e09;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color: #ff9e0b;
+}
+
+.rating > input:checked ~ label {
+  color: #ffa723;
+}
+/*//////////////////////////////////////// Rating Stars /////////////////////////////////////////*/
+
 
 

@@ -10,5 +10,6 @@ urlpatterns = [
     path('publish_pon.html/', publish_pon, name='publish_pon'),
     path('pon_status.html/', pon_status, name='pon_status'),
     path('previous_pons.html/', previous_pons, name='previous_pons'),
+    # path('user_profile.html/', user_profile, name="user_profile"),
     # path('register/', include('register.urls')),
 ]

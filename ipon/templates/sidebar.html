@@ -4,18 +4,59 @@
     {% include 'navbar.html' %}
     <div class="overlay"  onclick="toggleShow()"></div>
     <aside id="sidebar" class="sidebar">
-        <div class="sidebar-options"><img src="{% static 'assets/icon.png' %}" style="margin-top: 2vh;" alt="Icon image" width="500vw"></div>
-        <a class="sidebar-options">
+        <div class="black-background"></div> <!-- Cuadro negro -->
+        <div class="sidebar-options"><img src="{% static 'assets/icon.png' %}" style="z-index: 4; height: 30vh; width: auto;" alt="Icon image"></div>
+        <div class="sidebar-options">
             {% if username %}
-            {{ username }}
+                <b>{{ username }}</b>
             {% else %}
-                Guest
+                <b>Guest</b>
             {% endif %}
-        </a><hr style="width: 80%;">
-        <a class="sidebar-options">Profile Infomation</a><hr style="width: 80%;">
-        <a class="sidebar-options">Become a Driver / Active Driver</a><hr style="width: 80%;">
+        </div><hr style="width: 80%;">
 
-        <form action="{% url 'logout' %}" method="post" style="margin-top: 30vh;">
+        {% if is_driver %}    
+            {% if is_active %}
+                <div class="sidebar-options" style="flex-direction: column;">
+                    <b>{{ rate }}</b>
+                    <b style="color: #ff9e0b;">
+                        {% for i in "12345" %}
+                        {% if i|add:0 < rate %}
+                        <span style="color: #ff9e0b;">★</span>  <!-- Estrella llena -->
+                    {% elif i|add:0 == rate %}
+                        <span style="color: #ff9e0b;">★</span>  <!-- Estrella llena -->
+                    {% elif i|add:0 == rate|add:"0.5" %}
+                        <span style="color: #ff9e0b;">★</span>  <!-- Estrella media -->
+                    {% else %}
+                        <span style="color: #ccc;">☆</span>  <!-- Estrella vacía -->
+                    {% endif %}
+                        {% endfor %}
+                    </b>
+                </div>
+                <hr style="width: 80%;">
+            {% endif %}
+        {% else %}
+
+        {% endif %}
+        <a class="sidebar-options" href="{% url 'user_profile' %}">Profile Information</a><hr style="width: 80%;">
+
+        {% comment %} ////////////// Logistica de convertirse y cambiar de modo de usuario/Driver ////////////// {% endcomment %}
+            {% if is_driver %}    
+                {% if is_active %}
+                    <a class="sidebar-options" onclick="Update_status()">Passenger Mode</a><hr style="width: 80%;">
+                {% else %}
+                    {% if actual_pon == null %}
+                        <a class="sidebar-options" onclick="Update_status()">Driver Mode</a><hr style="width: 80%;">
+                    {% else %}
+                        <a class="sidebar-options">Can't change Mode</a><hr style="width: 80%;">
+                    {% endif %}
+                {% endif %}
+            {% else %}
+            <a class="sidebar-options" href="{% url 'user_form' user_id=user_id %}">Become a Driver</a><hr style="width: 80%;">
+            {% endif %}
+        {% comment %} ////////////// Logistica de convertirse y cambiar de modo de usuario/Driver ////////////// {% endcomment %}
+
+
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 25vh;">
             {% csrf_token %}
             <button type="submit" class="button custom-button">Cerrar sesión</button>
             <hr style="width: 80%;">
@@ -23,5 +64,37 @@
         
     </aside>
 
+
+    {% comment %} ////////////// Enviar request para actualizar si el usuario es driver o no ////////////// {% endcomment %}
+    <script>
+        function Update_status() {
+            const userId = {{ user_id }};  // Asegúrate de que esta variable esté disponible
+        
+            fetch(`/toggle-driver-mode/${userId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  // Incluye el token CSRF
+                },
+                body: JSON.stringify({})
+            })
+            
+            
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();  // Recargar la página después de la actualización
+                } else {
+                    alert('Error activating driver mode.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        var is_driver = {{ is_active|yesno:"true,false" }};
+    </script>
+    {% comment %} ////////////// Enviar request para actualizar si el usuario es driver o no ////////////// {% endcomment %}
+
+    <script src="{% static 'jstemplates/color_change.js' %}"></script>
     <script src="{% static 'jstemplates/toggle_sidebar.js' %}"></script>
 </body>

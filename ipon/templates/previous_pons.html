@@ -3,51 +3,128 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Previous Pons</title>
+    <title>Previous Payments</title>
     <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
     <link rel="stylesheet" href="{% static 'mained.css' %}">
 </head>
 
-<nav class="back-main"> 
-    <div class="back-title" >Previous Pons</div> 
-</nav>
-
 <body>
-    {% comment %} <h1>Published Rides</h1> {% endcomment %}
-    {% comment %} Tengo que hacer las tarjetas para esta sección :'D {% endcomment %}
+    <nav class="back-main"> 
+        <div class="back-title">Previous Payments</div> 
+    </nav>
+
     <div class="cards-container">
-
-            {% if published_pons %}
-                {% for ride in published_pons %}
-                <div id="rides-container" class="pon-card">
-                    <div class="ride-card">
-                        <div style="display: flex; justify-content: space-between;">
-                        <h4>From / to</h4><h4>Pon # {{ ride.Ride_id }}</h4>
-                        </div>
-                        <hr><br>
-                        <p><b>Driver:</b> {{ ride.Driver.Username }}</p>  <!-- Ensure this matches your User model field -->
-                        <p><b>From:</b> {{ ride.Start_location.name }}</p>  <!-- Accessing location name -->
-                        <p><b>To:</b> {{ ride.End_location.name }}</p>  <!-- Accessing location name -->
-                        <p><b>End Date:</b> {{ ride.Date_End }}</p>
-
-                        <p><b>Rate:</b> N/A</p>
-                        <br>
-
-                        {% comment %} Traer los elementos del history, añadir un campo de "Evaluado"
-                        para desplegar el botón de "Evaluate", si ya se evaluó, quitar submit rate. Si el valor es 0 (valor default) se despliega "N/A"{% endcomment %}
-                        {% comment %} Al darle click en evaluar, ha de salir un modal con el rate y un comentario, el rate es obligatorio. El botón dirá "Submit Rate" {% endcomment %}
-                        <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Evaluate</button>
-                    </div>
+        {% if previous_payments %}
+            {% for payment in previous_payments %}
+            <div id="payments-container" class="pon-card">
+                <div class="payment-card">
+                    <h4>Payment for Ride # {{ payment.Pon_id.Ride_id }}</h4>
+                    <hr><br>
+                    <p><b>Amount:</b> ${{ payment.amount }}</p>
+                    <p><b>Date:</b> {{ payment.Date }}</p>
+                    <p><b>Comment:</b> {{ payment.comment }}</p>
+                    <p><b>Rating:</b> {{ payment.Rate|default:"No rating" }}</p>
+                    
+                    <!-- Check if the current user is the passenger -->
+                    {% if payment.Passenger.ID_U == user_id %}
+                        <!-- Check if the review has been submitted -->
+                        {% if payment.comment == "Payment for the completed ride." %}
+                            <!-- Button to show the review form -->
+                            <br><br>
+                            <button 
+                            id="submit-review-btn-{{ payment.id }}" 
+                            onclick="document.getElementById('review-form-{{ payment.id }}').style.display='block'; this.style.display='none';" 
+                            class="brutalist-card__button brutalist-card__button--mark" 
+                            style="font-size: 2vh;">
+                            Leave a comment
+                            </button>
+                            <!-- Review form, initially hidden -->
+                            <form id="review-form-{{ payment.id }}" style="display:none;" action="{% url 'leave_rating_comment' payment.id %}" method="post" onsubmit="event.preventDefault(); submitReview({{ payment.id }});">
+                                {% csrf_token %}
+                                <input class="form-control" style="background-color: white;" name="comment" placeholder="Leave a comment..."></input>
+                                
+                                <div class="rating">
+                                    <input value="5" name="Rate" id="star5-{{ payment.id }}" type="radio">
+                                    <label title="text" for="star5-{{ payment.id }}"></label>
+                                    <input value="4" name="Rate" id="star4-{{ payment.id }}" type="radio">
+                                    <label title="text" for="star4-{{ payment.id }}"></label>
+                                    <input value="3" name="Rate" id="star3-{{ payment.id }}" type="radio">
+                                    <label title="text" for="star3-{{ payment.id }}"></label>
+                                    <input value="2" name="Rate" id="star2-{{ payment.id }}" type="radio">
+                                    <label title="text" for="star2-{{ payment.id }}"></label>
+                                    <input value="1" name="Rate" id="star1-{{ payment.id }}" type="radio" checked="">
+                                    <label title="text" for="star1-{{ payment.id }}"></label>
+                                    
+                                </div><br>
+                                
+                                <button type="submit" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Submit Rating and Comment</button>
+                            </form>
+                        {% else %}
+                            <!-- Display Review and Rating for both Driver and Passenger -->
+                            <p><b>Your Review:</b> {{ payment.comment }}</p>
+                            <p><b>Your Rating:</b> {{ payment.Rate }}</p>
+                        {% endif %}
+                    {% endif %}
                 </div>
-                {% endfor %}
-            {% else %}
-                <p>No published rides available.</p>
-            {% endif %}
-    
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="font-size: 2.5vh;">No previous payments available.</p>
+        {% endif %}
     </div>
+
+    <!-- Notification div to display messages -->
+    <div id="notification" style="display:none; background-color: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc;"></div>
 
     <nav class="back-main"> 
         <div class="back-title"><a href="{% url 'main' %}"><img src="{% static 'assets/iconos/back.png' %}">Back</a></div>
     </nav>
+
+    <script>
+        function submitReview(paymentId) {
+            const form = document.getElementById('review-form-' + paymentId);
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const notification = document.getElementById('notification');
+                notification.style.display = 'block';  // Show the notification div
+                notification.innerText = data.message;  // Set the message
+
+                if (data.status === 'success') {
+                    form.style.display = 'none';  // Hide the form after submission
+                    const reviewButton = document.getElementById('submit-review-btn-' + paymentId);
+                    if (reviewButton) {
+                        reviewButton.style.display = 'none';  // Hide the button after review submission
+                    }
+                    // Display the submitted review and rating
+                    const reviewDisplay = document.createElement('p');
+                    reviewDisplay.innerHTML = `<b>Your Review:</b> ${data.comment} <br><b>Your Rating:</b> ${data.rating}`;
+                    document.getElementById('payments-container').appendChild(reviewDisplay);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const notification = document.getElementById('notification');
+                notification.style.display = 'block';  // Show the notification div
+                notification.innerText = 'An error occurred while submitting your review.';  // Set error message
+            });
+        }
+        var is_driver = {{ is_active|yesno:"true,false" }};
+    </script>
+    <script src="{% static 'jstemplates/color_change.js' %}"></script>
+    </script>
 </body>
 </html>

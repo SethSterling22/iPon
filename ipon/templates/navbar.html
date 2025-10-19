@@ -1,23 +1,43 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'styles_navbar.css' %}">
-<nav class="nav-main">
+<nav class="nav-main" id="nav-main">
     <button class="hide-sidebar" onclick="toggleShow()">
         <span></span>
         <span></span>
         <span></span>
     </button>
+    <div style="display: flex; justify-content: space-between; width: 95%;">
     <div style="display: flex; flex-direction: column;">
-        <div class="nav-title">Passenger:</div>
+        {% if is_active %}
+            <div class="nav-title">Driver:</div>
+        {% else %}
+            <div class="nav-title">Passenger:</div>
+        {% endif %}
+
         {% comment %} reemplazar por el nombre del ususario  {% endcomment %}
         <div class="nav-title">
             <b>
                 {% if username %}
-                {{ username }}
+                    {{ username }}
                 {% else %}
                     Guest
                 {% endif %}
             </b>
         </div> 
+
     </div> 
+    {% if is_active %}
+    {% comment %} Mostrar el carrito con el Online :D  {% endcomment %}
+    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        <img style="width: 3vh; margin-right: 4.3vh;" src="{% static 'assets/iconos/car.png' %}">
+
+        <div class="nav-title" style="width: 11vh; font-size: 2vh;">
+            🟢 Online
+        </div> 
+    </div>
+    {% else %}
+    <div></div>
+    {% endif %}
+
 </nav>

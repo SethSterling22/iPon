@@ -27,23 +27,27 @@
                     <img src="{% static 'assets/calendar.png' %}" alt="Calendar Icon" class="button-icon" />
                     <a href="{% url 'published_pons' %}" class="view-btn" style="display: flex; justify-content: center; align-items: center; text-decoration: none;">View Published Pons</a>
                 </div>
+                <br><br>
                 
                 <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Publish Pon</button>
             </div>
         </div> 
 
-        <!-- Modal for ride confirmation -->
+        <!-- //////////////////////// Modal for ride confirmation //////////////////////// -->
         <div id="ride-popup" class="modal" style="display: none;">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Confirm Ride</h2>
+                <h2>Confirm Pon</h2>
                 <p>From: <span id="from-location"></span></p>
-                <p>To: <span id="to-location"></span></p>
-                <label for="num-people">Number of People (including yourself):</label>
-                <input type="number" id="num-people" min="1" max="4" value="1" />
-                <button id="confirm-publish-btn" class="accept-pon-btn">Confirm and Publish Ride</button>
+                <p>To: <span id="to-location"></span></p><br>
+                <label for="num-people">Number of People in the ride 1/4
+                </label><br><br><br>
+                {% comment %} <input type="number" id="num-people" value="4" style="font-size: 2.5vh;" onkeydown="return false"/> {% endcomment %}
+                <button id="confirm-publish-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Confirm and Publish Pons</button>
             </div>
         </div>
+        <!-- //////////////////////// Modal for ride confirmation //////////////////////// -->
+        
     </div>
 
     <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
@@ -55,7 +59,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const routeButton = document.getElementById('route-btn');
             const csrfToken = document.getElementById('csrf-token').value;
-        
+
             routeButton.addEventListener('click', function () {
                 const fromLocation = document.getElementById('source').value;
                 const toLocation = document.getElementById('destination').value;
@@ -63,16 +67,17 @@
                 if (fromLocation && toLocation) {
                     document.getElementById('from-location').innerText = fromLocation;
                     document.getElementById('to-location').innerText = toLocation;
-                    document.getElementById('ride-popup').style.display = 'block';
+                    document.getElementById('ride-popup').style.display = 'flex';
                 } else {
                     alert("Please enter both 'From' and 'To' locations.");
                 }
             });
-        
+
+            // Confirm and publish ride
             document.getElementById('confirm-publish-btn').addEventListener('click', function () {
                 const fromLocation = document.getElementById('from-location').innerText;
                 const toLocation = document.getElementById('to-location').innerText;
-                const numberOfPeople = document.getElementById('num-people').value;
+                //const numberOfPeople = document.getElementById('num-people').value;
         
                 fetch('{% url "publish_pon" %}', {
                     method: 'POST',
@@ -83,24 +88,27 @@
                     body: JSON.stringify({
                         from_location: fromLocation,
                         to_location: toLocation,
-                        number_of_people: numberOfPeople,
+                        //number_of_people: numberOfPeople,
                     }),
                 })
                     .then((response) => {
                         if (response.ok) {
-                            alert('Ride published successfully!');
+                            alert('Pon published successfully!');
                             closePopup();
                         } else {
                             response.json().then((data) => {
-                                alert(data.error || 'Failed to publish ride.');
+                                alert(data.error);
                             });
                         }
                     })
                     .catch((error) => {
                         console.error('Error:', error);
-                        alert('An error occurred while publishing the ride.');
+                        //alert('An error occurred while publishing the Pon.');
                     });
             });
+
+            // Close modal functionality
+            document.querySelector('.close').addEventListener('click', closePopup);
         
             function closePopup() {
                 document.getElementById('ride-popup').style.display = 'none';
