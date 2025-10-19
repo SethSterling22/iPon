@@ -402,3 +402,5 @@ FodyWeavers.xsd
 
 # Virtual Environments
 venv/
+
+*.out
