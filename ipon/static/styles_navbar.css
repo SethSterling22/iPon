@@ -7,7 +7,7 @@
 }
 
 .nav-title {
-    font-size: 2.5svh;
+    font-size: 2.5vh;
     margin-left: 10%;
     display: flex;
     color: white;
@@ -28,7 +28,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 3;
+    overflow-y: auto;
+}
+
+
+.black-background {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    height: 22vh; 
+    background-color: #212126; 
+    z-index: 3; 
 }
 
 .overlay {
@@ -117,14 +129,20 @@
 
 .button.custom-button[type="submit"] {
     font-family: 'Times New Roman', serif; 
-    background-color: #ffffff00; /* Cambia el color de fondo */
-    color: inherit; /* Cambia el color del texto */
-    border: none; /* Elimina el borde */
-    padding-block: 10px; /* Cambia el padding */
-    font-size: 2.5vh; /* Cambia el tamaño de la fuente */
+    background-color: #ffffff00;
+    color: inherit; 
+    border: none; 
+    padding-block: 10px; 
+    font-size: 2.5vh; 
 }
 
-
+.button[type="submit"]:hover,
+.button.custom-button[type="submit"]:hover {
+    margin-left: 10%; 
+    width: 80%; 
+    background-color: rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+}
 /* ////////////// Botón - Menú de hamburguesa ////////////// */
 
 

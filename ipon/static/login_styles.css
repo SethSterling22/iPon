@@ -148,7 +148,7 @@ input[type="checkbox"] {
   
   /*///////////////////////////////////////// Botones funcionales /////////////////////////////////////////*/
   .brutalist-card__button {
-    width: 35vh;
+    width: 100%;
     height: 4vh;
     padding: 1rem;
     text-align: center;

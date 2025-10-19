@@ -47,8 +47,6 @@ window.addEventListener('resize', () => {
 
 });
 
-
-
 function toggleShow_make() {
     const popupContainer = document.getElementById('popupContainer');
     

@@ -9,51 +9,143 @@
 </head>
 
 <nav class="back-main"> 
-    <div class="back-title" >Pon Status</div> 
+    <div class="back-title">Pon Status</div> 
+    <div class="back-title"><a href="{% url 'pon_status' %}"><img src="{% static 'assets/iconos/Refresh_icon.png' %}">Refresh</a></div>
 </nav>
 
 <body>
-    {% comment %} <h1>Published Rides</h1> {% endcomment %}
-    {% comment %} Tengo que hacer las tarjetas para esta sección :'D {% endcomment %}
     <div class="cards-container">
-
-            {% if published_pons %}
-                {% for ride in published_pons %}
-                <div id="rides-container" class="pon-card">
-                    <div class="ride-card">
-                        <div style="display: flex; justify-content: space-between;">
-                        <h4>From / to</h4><h4>Pon # {{ ride.Ride_id }}</h4>
-                        </div>
-                        <hr><br>
-                        <p><b>Driver:</b> {{ ride.Driver.Username }}</p>  <!-- Ensure this matches your User model field -->
-                        <p><b>License:</b> </p>
-                        <p><b>Occupied:</b> 1 / 4</p>
-                        <p><b>Passenger:</b> {{ ride.Passenger.Username }}</p>  <!-- Accessing passenger's username -->
-                        <p><b>From:</b> {{ ride.Start_location.name }}</p>  <!-- Accessing location name -->
-                        <p><b>To:</b> {{ ride.End_location.name }}</p>  <!-- Accessing location name -->
-                        <p><b>Start Date:</b> {{ ride.Date_Start }}</p>
-                        <p><b>End Date:</b> {{ ride.Date_End }}</p>
-                        <br>
-                        
+        {% if recent_ride %}
+            <div id="rides-container" class="pon-card">
+                <div class="ride-card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4>From / to</h4><h4>Pon # {{ recent_ride.Ride_id }}</h4>
                     </div>
+                    <hr><br>
+                    <p><b>Driver:</b> 
+                        {% if recent_ride.Driver.Username == 'temp_driver' %}
+                            Empty...
+                        {% else %}
+                            {{ recent_ride.Driver.Username }}
+                        {% endif %}
+                    </p>
+                    <p><b>License:</b> {{ recent_ride.Driver.License_plate }}</p>
+                    <p><b>Occupied:</b> {{ occupied_seats }} / 4</p>
+                    <p><b>Passengers:</b> 
+                        {% for passenger in recent_ride.Passenger.all %}
+                            {{ passenger.Username }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><b>From:</b> {{ recent_ride.Start_location.name }}</p>
+                    <p><b>To:</b> {{ recent_ride.End_location.name }}</p>
+                    <p><b>Start Date:</b> {{ recent_ride.Date_Start }}</p>
+                    <p><b>End Date:</b> {{ recent_ride.Date_End }}</p>
+                    <p><b>Current Status:</b> {{ recent_ride.Status }}</p>
+                    <br>
+
+                    <button
+                        class="brutalist-card__button brutalist-card__button--mark" 
+                        style="font-size: 2vh; background-color: red; color: white;"
+                        onclick="leaveRide({{ recent_ride.Ride_id }})"
+                    >
+                        Leave 
+                    </button>
+
+                    <br><br>
+
+                    <button 
+                        onclick="updateRideStatus({{ recent_ride.Ride_id }})"
+                        id="route-btn" 
+                        class="brutalist-card__button brutalist-card__button--mark" 
+                        style="font-size: 2vh;"
+                    >
+                        {% if recent_ride.Status == "In Progress" %}
+                            Proceed to pay
+                        {% else %}
+                            Update Status
+                        {% endif %}
+                    </button>
                 </div>
-
-                {% endfor %}
-
-                {% comment %} Debe haber condiciones que para cambiar el print de "In progress a Finished" {% endcomment %}
-                <button id="route-btn" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Update - In progress</button>
-
-            {% else %}
-                <p>No published rides available.</p>
-            {% endif %}
-
-
-        
-
+            </div>
+        {% else %}
+            <p style="font-size: 2.5vh;">No Pon status available.</p>
+        {% endif %}
     </div>
 
     <nav class="back-main"> 
         <div class="back-title"><a href="{% url 'main' %}"><img src="{% static 'assets/iconos/back.png' %}">Back</a></div>
     </nav>
+
+    <script>
+        function updateRideStatus(rideId) {
+            fetch("{% url 'update_pon_status' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(), // Include CSRF token
+                },
+                body: JSON.stringify({ ride_id: rideId }) // Pass the ride ID
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+        
+                    // If the backend sends a redirect_url, navigate to the Stripe Checkout page
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        // Refresh the page to reflect updates
+                        window.location.reload();
+                    }
+                } else {
+                    alert(data.message || 'An error occurred.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the ride status.');
+            });
+        }
+
+        function leaveRide(rideId) {
+            fetch("{% url 'leave_pon' %}", {
+                method: 'POST',
+                headers: {                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken(), // Include CSRF token
+            },
+            body: JSON.stringify({ pon_id: rideId }) // Pass the ride ID
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    // Reload the page to update the UI
+                    location.reload();
+                } else {
+                    alert(data.message || 'An error occurred.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while leaving the ride.');
+            });
+        }
+
+        // Helper function to get CSRF token
+        function getCSRFToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    return cookie.substring('csrftoken='.length);
+                }
+            }
+            return null;
+        }
+
+        var is_driver = {{ is_active|yesno:"true,false" }};
+    </script>
+    <script src="{% static 'jstemplates/color_change.js' %}"></script>
 </body>
 </html>

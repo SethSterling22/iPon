@@ -12,7 +12,7 @@
 }
 
 .footer-title {
-    font-size: 2.5vh;
+    font-size: 2.2vh;
     /* margin-left: 10%; */
     width: 90%;
     display: flex;
@@ -27,10 +27,10 @@
     color: white;
     text-decoration: none; 
     width: 100%;
-  }
+}
 
 .footer-title:hover{
-    font-size: 2.7vh;
+    font-size: 2.4vh;
     cursor: pointer;
     background-color: #D44E05; 
     border-radius: 5px;
@@ -38,7 +38,7 @@
 }
 
 .vertical-line {
-    width: 1px;
+    width: 5px;
     height: 70%;
     background-color: white;
 }
@@ -57,13 +57,13 @@
 
 .popup-container {
     position: fixed;
-    bottom: -100%; /* Inicialmente oculto fuera de la pantalla */
+    bottom: -100%; 
     left: 0;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco con algo de opacidad */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Sombra */
-    transition: bottom 0.3s ease; /* Transición suave */
-    z-index: 9; /* Asegúrate de que esté detrás del footer */
+    background-color: rgba(255, 255, 255);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
+    transition: bottom 0.3s ease; 
+    z-index: 9; 
 }
 
 .popup-content {

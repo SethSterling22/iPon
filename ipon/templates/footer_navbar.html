@@ -3,7 +3,17 @@
 <link rel="stylesheet" href="{% static 'styles_footer.css' %}">
 
 <nav class="footer-main">
+        {% comment %} Cambiar a redireccción de ver los pons puestos cuando Is_active {% endcomment %}
+        {% if is_driver %}    
+                {% if is_active %}
+                <div class="footer-title"><a href="{% url 'published_pons' %}">Take Pons</a></div> 
+                {% else %}
+                        <div class="footer-title" onclick="toggleShow_make()">Make a Pon</div>
+                {% endif %}
+        {% else %}
         <div class="footer-title" onclick="toggleShow_make()">Make a Pon</div>
+        {% endif %}
+        
         <div class="vertical-line"></div>
         <div class="footer-title"><a href="{% url 'pon_status' %}">Pon Status</a></div> 
         <div class="vertical-line"></div>

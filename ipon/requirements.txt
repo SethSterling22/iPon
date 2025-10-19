@@ -13,5 +13,7 @@ python-dotenv==1.0.1
 requests==2.32.3
 setuptools==69.5.1
 sqlparse==0.5.1
+stripe==11.4.1
+typing_extensions==4.12.2
 urllib3==2.2.3
 wheel==0.43.0

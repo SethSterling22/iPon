@@ -34,6 +34,9 @@ DEBUG = True
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_TRUSTED_ORIGINS')]
 
+# Stripe API KEYS
+STRIPE_PK = os.getenv('STRIPE_PK')
+STRIPE_SK = os.getenv('STRIPE_SK')
 
 # Application definition
 

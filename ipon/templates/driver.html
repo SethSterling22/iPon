@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Become a driver</title>
+    <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
+    <link rel="stylesheet" href="{% static 'mained.css' %}">
+</head>
+
+<nav class="back-main"> 
+    <div class="back-title" >Become a driver</div> 
+</nav>
+
+<body>
+    {% comment %} <h1>Published Rides</h1> {% endcomment %}
+    {% comment %} Tengo que hacer las tarjetas para esta sección :'D {% endcomment %}
+    <div class="cards-container">
+        <div class="profile-container"> <!-- Profile container for styling -->
+            <div class="profile-details">
+                <h1>Add Information for {{ user.Username }}</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br><br><br>
+                    <button type="submit" class="brutalist-card__button brutalist-card__button--mark" style="font-size: 2vh;">Submit</button>
+                </form>
+            </div>
+    
+            <!-- <div class="action-buttons">
+                <a href="{% url 'logout' %}" class="button">Logout</a>
+            </div> -->
+        </div>
+    </div>
+
+    <nav class="back-main"> 
+        <div class="back-title"><a href="{% url 'main' %}"><img src="{% static 'assets/iconos/back.png' %}">Back</a></div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="icon" type="image/png" href="{% static 'assets/icon.png' %}">
+    <link rel="stylesheet" href="{% static 'mained.css' %}"> <!-- Link to the external CSS -->
+</head>
+
+<nav class="back-main"> 
+    <div class="back-title">User Profile</div> 
+</nav>
+
+<body>
+    <div class="cards-container">
+    <div class="profile-container"> <!-- Profile container for styling -->
+        <div class="profile-details">
+            <p><strong>Username:</strong> {{ username }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Phone Number:</strong> {{ phone_number }}</p>
+            <p><strong>Driver Status:</strong> {% if Is_active %} Yes {% else %} No {% endif %}</p>
+            
+            {% if is_driver %}
+                <p><strong>License ID Number:</strong> {{ license_number }}</p>
+                <p><strong>License Plate:</strong> {{ License_plate }}</p>
+                <p><strong>Car Brand:</strong> {{ Car_Brand }}</p>
+                <p><strong>Car Model:</strong> {{ Car_Model }}</p>
+                <p><strong>Car Year:</strong> {{ Car_Year }}</p>
+                <p><strong>Average Rating:</strong> {{ average_rating }}</p>
+            {% endif %}
+        </div>
+
+        <!-- <div class="action-buttons">
+            <a href="{% url 'logout' %}" class="button">Logout</a>
+        </div> -->
+    </div>
+</div>
+
+
+
+    <nav class="back-main"> 
+        <div class="back-title"><a href="{% url 'main' %}"><img src="{% static 'assets/iconos/back.png' %}">Back</a></div>
+    </nav>
+
+    <script>
+        var is_driver = {{ Is_active|yesno:"true,false" }};
+    </script>
+    <script src="{% static 'jstemplates/color_change.js' %}"></script>
+
+</body>
+</html>

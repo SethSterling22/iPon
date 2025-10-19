@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Publish Ride</title>
+    <link rel="stylesheet" href="{% static 'mained.css' %}">
+</head>
+
+<body>
+    <h1>Publish a Ride</h1>
+    <form id="ride-form" method="POST" action="{% url 'publish_pon' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="source">Original Location:</label>
+            <input type="text" name="source" id="source" class="form-control" value="{{ from_location }}" />
+        </div>
+        <div class="form-group">
+            <label for="destination">Desired Location:</label>
+            <input type="text" name="destination" id="destination" class="form-control" value="{{ to_location }}" />
+        </div>
+        <button type="button" id="publish-btn">Publish Ride</button>
+    </form>
+</body>
+</html>
